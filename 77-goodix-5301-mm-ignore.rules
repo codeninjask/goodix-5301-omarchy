@@ -1,0 +1,4 @@
+# Goodix 27c6:5301 enumerates as a CDC ACM modem. Keep ModemManager from
+# probing it while allowing libfprint to detach cdc_acm while the sensor is used.
+ACTION!="remove", SUBSYSTEM=="usb", ATTRS{idVendor}=="27c6", ATTRS{idProduct}=="5301", ENV{ID_MM_DEVICE_IGNORE}="1"
+ACTION!="remove", SUBSYSTEM=="tty", ATTRS{idVendor}=="27c6", ATTRS{idProduct}=="5301", ENV{ID_MM_DEVICE_IGNORE}="1"

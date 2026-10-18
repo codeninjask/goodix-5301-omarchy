@@ -1,0 +1,30 @@
+pkgbase = libfprint-goodix-5301
+	pkgdesc = Experimental libfprint driver for Goodix 27c6:5301 on Dell Inspiron 5570
+	pkgver = 0.1.0
+	pkgrel = 4
+	url = https://github.com/codeninjask/goodix-5301-omarchy
+	arch = x86_64
+	license = LGPL-2.1-or-later
+	makedepends = glib2-devel
+	makedepends = gobject-introspection
+	makedepends = meson
+	makedepends = ninja
+	depends = gcc-libs
+	depends = glib2
+	depends = glibc
+	depends = libgudev
+	depends = libgusb
+	depends = opencv
+	depends = openssl
+	depends = pixman
+	provides = libfprint=1.94.100
+	provides = libfprint-2.so
+	provides = libfprint-git
+	conflicts = libfprint
+	conflicts = libfprint-git
+	source = libfprint-goodix-5301-0.1.0.tar.gz
+	source = 77-goodix-5301-mm-ignore.rules
+	b2sums = 6aa04b6819b57a77672ebfcde41497e56959f79227adf12798b5d70273ce16c711ed8f6b720a8ec51e7dccbc3639b9c84f8aba4c634b03a07c349056a7b46e0f
+	b2sums = 7a5b689a2f671a749da7a458f08c3624fc463bdb7a8c13555fc362f1a7373b1342c0f7d47c6eaf5840958a72cdd8925e288017688e8020992e3a22450875901f
+
+pkgname = libfprint-goodix-5301

@@ -1,0 +1,41 @@
+# Local packaging/build outputs
+/src/
+/pkg/
+/build/
+/_build/
+*.tar.*
+*.pkg.*
+*.o
+*.a
+*.so
+*.so.*
+*.pyc
+__pycache__/
+# Private diagnostics, biometric fixtures, and vendor binaries
+*.log
+*.jsonl
+*.pcap*
+*.ioctl*
+*.umockdev
+*.png
+*.jpg
+*.jpeg
+*.pgm
+*.ppm
+*.bmp
+*.raw
+*.fprint
+*.dll
+*.exe
+*.sys
+*.cab
+*.zip
+*.bak*
+DEBUG-NOTES.md
+.env*
+.codex/
+.agents/
+.aws/
+
+# Upstream fingerprint image encoded as a C++ array
+tests-embedded.hpp

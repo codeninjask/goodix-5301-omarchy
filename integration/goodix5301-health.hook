@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Omarchy runs this in the user context after system updates and migrations.
+if ! "$HOME/.local/libexec/goodix5301/check-reader.sh"; then
+  omarchy-notification-send -u critical -g 󰈷 'Fingerprint Driver Needs Attention' \
+    'An update changed the Goodix driver or its dependencies. Use your password and open Setup → Security → Fingerprint → Check Reader.' || true
+fi

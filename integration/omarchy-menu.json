@@ -1,0 +1,29 @@
+{
+  "setup.security.fingerprint": {
+    "icon": "󰈷",
+    "label": "Fingerprint",
+    "title": "Fingerprint",
+    "when": "omarchy-hw-fingerprint",
+    "action": ""
+  },
+  "setup.security.fingerprint.add": {
+    "icon": "󰐕",
+    "label": "Add Fingerprint",
+    "action": "\"$HOME/.local/bin/goodix5301-settings\" add"
+  },
+  "setup.security.fingerprint.verify": {
+    "icon": "󰄬",
+    "label": "Verify Fingerprint",
+    "action": "\"$HOME/.local/bin/goodix5301-settings\" verify"
+  },
+  "setup.security.fingerprint.list": {
+    "icon": "󰈷",
+    "label": "Enrolled Fingers",
+    "action": "\"$HOME/.local/bin/goodix5301-settings\" list"
+  },
+  "setup.security.fingerprint.status": {
+    "icon": "󰋼",
+    "label": "Check Reader",
+    "action": "\"$HOME/.local/bin/goodix5301-settings\" status"
+  }
+}

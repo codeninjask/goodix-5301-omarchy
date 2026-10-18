@@ -1,0 +1,12 @@
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = libfprint
+Target = libfprint-git
+
+[Action]
+Description = Preserving this laptop's Goodix 5301 driver...
+When = PreTransaction
+Exec = /usr/local/libexec/goodix5301-protect-driver
+AbortOnFail
