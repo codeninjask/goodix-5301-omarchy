@@ -1,155 +1,117 @@
-# Goodix 27c6:5301 for Arch Linux / Omarchy
+# Goodix 5301 for Arch Linux
 
-Experimental libfprint driver, hardware tested on a **Dell Inspiron 5570** with
-USB reader **27c6:5301** and firmware **GF3208_HT_APP_10035**. This is a community
-port, not an official Dell or Goodix release. Other firmware and hardware have
-not been validated. See [HARDWARE-TESTING.md](HARDWARE-TESTING.md).
+A libfprint port for the Goodix `27c6:5301` fingerprint reader, tested on a
+Dell Inspiron 5570 running Omarchy. Includes an Arch package and optional
+Omarchy menu integration.
 
-## Fresh install
+Based on [J0UH/goodix-5201-linux](https://github.com/J0UH/goodix-5201-linux).
+This is an experimental community driver; it is not maintained by Dell or Goodix.
 
-On an up-to-date x86_64 Omarchy/Arch system, run as your normal user:
+## Hardware support
+
+| Hardware | Status |
+| --- | --- |
+| Dell Inspiron 5570, USB `27c6:5301` | Enrollment and verification working |
+| Firmware `GF3208_HT_APP_10035` | Tested with package `0.1.0-3` |
+| Package `0.1.0-5` | Verification confirmed by the user after the firmware fix |
+| Other readers and laptops | Untested |
+
+The driver accepts `GF3208_HT_APP_10035` and `GF5288_HT_APP_10035` only.
+It does not flash firmware. See the [test notes](docs/hardware.md) for results
+and remaining checks.
+
+## Install
+
+On x86_64 Arch Linux or Omarchy, run as your normal user:
 
 ```sh
-sudo pacman -S --needed git && git clone https://github.com/codeninjask/goodix-5301-omarchy.git && cd goodix-5301-omarchy && ./install.sh
+sudo pacman -S --needed git
+git clone https://github.com/codeninjask/goodix-5301-omarchy.git
+cd goodix-5301-omarchy
+./install.sh
 ```
 
-The installer checks the USB ID, builds the bundled source with `makepkg`, and
-installs the driver and `fprintd`. It requests sudo for package operations.
-Accept pacman's replacement of `libfprint` or `libfprint-git` with
-`libfprint-goodix-5301`. This replaces the system libfprint library.
+The installer checks for the reader, builds the bundled source with `makepkg`,
+and installs the driver and `fprintd`. Accept the replacement of `libfprint` or
+`libfprint-git` when pacman asks. This package replaces the system libfprint library.
 
-The source is included in this repository. Installation does not download a
-driver tree or require Dell's Windows driver. `prepare-source.sh` generates a
-deterministic local archive; the PKGBUILD verifies its checksum. Build products
-and archives are ignored by Git.
+The installer leaves PAM and login settings alone. Keep password authentication
+available if you configure fingerprint authentication later.
 
-Enroll and verify after installation:
+## Enroll a finger
 
 ```sh
 fprintd-enroll
 fprintd-verify
+```
+
+Press and hold briefly, lift, and change placement slightly between samples.
+Enrollment takes 15 samples; retries do not count toward that total. Look for
+`enroll-completed`, then `verify-match`.
+
+To list saved fingers:
+
+```sh
 fprintd-list "$USER"
 ```
 
-Use a clean, dry finger. Press and hold briefly, lift, then vary placement for
-each of the 15 enrollment samples. Retry messages do not consume a stage.
-Success is `enroll-completed`, followed by `verify-match` on verification.
-A fresh system needs new enrollment; no saved fingerprints are included here.
+## Omarchy
 
-**The installer does not configure PAM, sudo authentication, screen unlocking,
-display-manager login, or browser authentication.** Keep password authentication
-available. Enrollment and verification can be used before configuring any
-authentication integration separately.
+The optional menu adds enrollment, verification, saved-finger removal, and
+reader checks under **Setup → Security → Fingerprint**.
+See [Omarchy setup](docs/omarchy.md) for installation and update protection.
 
-To build without installing:
+Omarchy's stock fingerprint setup command may replace this package with
+`libfprint-git`. Use the custom menu or the `fprintd-*` commands with this driver.
 
-```sh
-./prepare-source.sh
-makepkg --verifysource
-makepkg --cleanbuild --syncdeps
-meson test -C src/build --print-errorlogs
-```
+## Troubleshooting
 
-`makepkg --syncdeps` can install build dependencies. To install the built package
-later, use `makepkg --install`. Do not build as root.
-
-## Optional Omarchy menu
-
-The Omarchy version tested here checks for the exact package name
-`libfprint-git` in its stock fingerprint setup command. That command can replace
-this driver. Use the provided menu extension or the `fprintd-*` commands instead.
-Menu APIs may change in future Omarchy releases.
-
-The files under `integration/` preserve the working native menu helper and
-update safeguards. To install the menu helpers manually:
-
-```sh
-install -Dm755 integration/manage-fingerprints.sh "$HOME/.local/bin/goodix5301-settings"
-install -Dm755 integration/check-reader.sh "$HOME/.local/libexec/goodix5301/check-reader.sh"
-install -Dm755 integration/delete-fingerprint.py "$HOME/.local/libexec/goodix5301/delete-fingerprint.py"
-```
-
-Merge the entries in [integration/omarchy-menu.json](integration/omarchy-menu.json)
-into `~/.config/omarchy/extensions/omarchy-menu.jsonc`, preserving any existing
-entries. On a fresh system where that file does not exist, copy the template:
-
-```sh
-mkdir -p "$HOME/.config/omarchy/extensions"
-cp -n integration/omarchy-menu.json "$HOME/.config/omarchy/extensions/omarchy-menu.jsonc"
-```
-
-Open **Setup → Security → Fingerprint** to add, verify, list, or check prints.
-The extension uses the user configuration directory; it does not modify
-`/usr/share/omarchy` or authentication settings.
-
-## Optional update safeguards
-
-After installing the menu helpers, install the post-update health notification:
-
-```sh
-omarchy hook install post-update integration/goodix5301-health.hook
-```
-
-To prevent package transactions from replacing this driver with stock libfprint:
-
-```sh
-sudo install -Dm755 integration/protect-driver.sh /usr/local/libexec/goodix5301-protect-driver
-sudo install -Dm644 integration/05-goodix5301-preserve-driver.hook /etc/pacman.d/hooks/05-goodix5301-preserve-driver.hook
-```
-
-The pacman hook aborts a replacement transaction before package changes. Review
-such updates manually. Dependency/ABI changes may require rebuilding this
-package; the safeguards cannot guarantee compatibility with future updates.
-
-## Troubleshooting and rollback
-
-Read-only checks:
+Start with:
 
 ```sh
 lsusb -d 27c6:5301
 pacman -Q libfprint-goodix-5301 fprintd
-systemctl status fprintd.service --no-pager
 journalctl -b -u fprintd.service --no-pager
 ```
 
-The daemon is normally D-Bus activated. Firmware other than
-`GF3208_HT_APP_10035` and `GF5288_HT_APP_10035` is deliberately rejected. Reboot if the reader becomes
-unresponsive. Do not flash firmware as part of installation or troubleshooting.
-Review diagnostics locally; never publish fingerprint frames, templates, or USB
-captures. See [PUBLISHING.md](PUBLISHING.md) for the repository exclusions.
+- **Unsupported firmware:** check that `0.1.0-5` or newer is installed. If the
+  reported identifier differs from both listed above, include it in an issue.
+- **Device already claimed:** close other enrollment, verification, or
+  authentication prompts before retrying. Only one client can use the reader.
+- **Reader stops responding:** try a reboot and include the relevant daemon
+  errors in your report.
 
-For an intentional rollback, first disable the optional replacement guard if
-installed, then restore Arch's standard library:
+For other problems, [open an issue](https://github.com/codeninjask/goodix-5301-omarchy/issues/new/choose)
+with your laptop model, USB ID, package versions, and the steps that failed.
+Review logs before posting; leave out fingerprint images, saved templates,
+and USB captures.
+
+## Uninstall
+
+If you installed the optional package replacement guard, disable it first:
 
 ```sh
-sudo mv /etc/pacman.d/hooks/05-goodix5301-preserve-driver.hook /etc/pacman.d/hooks/05-goodix5301-preserve-driver.hook.disabled
+sudo mv /etc/pacman.d/hooks/05-goodix5301-preserve-driver.hook \
+  /etc/pacman.d/hooks/05-goodix5301-preserve-driver.hook.disabled
+```
+
+Restore Arch's standard library:
+
+```sh
 sudo pacman -S libfprint
 ```
 
-Skip the `mv` command if the guard was never installed. The stock package does
-not provide this experimental 5301 port. Remove only the Goodix menu entries,
-helpers, and post-update hook if you installed them. These steps do not edit PAM.
+The standard package does not include this 5301 port. If you installed the
+Omarchy integration, remove its menu entries, helpers, and update hook too.
 
-## Source and license
+## Development
 
-Based on [J0UH/goodix-5201-linux](https://github.com/J0UH/goodix-5201-linux),
-commit `1f7f3882026a97ce234c199048b4aee5aeb342e6`, and libfprint. The internal
-driver ID remains `goodix5201`; its USB match is `27c6:5301` in this port.
-Matching uses the inherited SIGFM/OpenCV implementation. See
-[PROVENANCE.md](PROVENANCE.md) for port details and source sanitization.
+Build instructions and reporting guidelines are in [CONTRIBUTING.md](CONTRIBUTING.md).
+The [source notes](docs/source.md) cover the upstream revision, port changes,
+and omitted test fixtures.
 
-Licensed under **LGPL-2.1-or-later**, with retained per-file notices and bundled
-component licenses. See [LICENSE](LICENSE), source `COPYING`, `AUTHORS`, and
-`THANKS`. Packaging and integration scripts added here are also available under
-LGPL-2.1-or-later.
+## License
 
-
-### Firmware rejection repair (0.1.0-5)
-
-The reader has now reported both `GF3208_HT_APP_10035` and
-`GF5288_HT_APP_10035`. This release accepts both exact identifiers, rejects
-unknown firmware, and guards menu operations against concurrent scans and false
-success reports. Live enrollment and matching with the newly reported identifier
-remain pending; see HARDWARE-TESTING.md. Existing hardware success refers to
-0.1.0-3. The menu's delete action also requires installing
-`integration/delete-fingerprint.py` to `~/.local/libexec/goodix5301/`.
+[LGPL-2.1-or-later](LICENSE). Upstream authorship notices and bundled component
+licenses are retained in the source tree. Packaging and integration scripts
+use the same license.

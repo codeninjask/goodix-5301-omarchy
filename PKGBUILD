@@ -1,4 +1,4 @@
-# Maintainer: OpenAI Codex (experimental 27c6:5301 port)
+# Maintainer: codeninjask
 # Based on J0UH/goodix-5201-linux and libfprint.
 
 pkgname=libfprint-goodix-5301
