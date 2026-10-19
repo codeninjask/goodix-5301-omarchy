@@ -5,6 +5,10 @@ problems=0
 report() { printf 'ATTENTION: %s\n' "$*" >&2; problems=$((problems + 1)); }
 
 if pacman -Q libfprint-goodix-5301; then
+  version=$(pacman -Q libfprint-goodix-5301)
+  if (( $(vercmp "${version##* }" 0.1.0-5) < 0 )); then
+    report 'Installed driver predates the dual-firmware repair; install version 0.1.0-5 or newer.'
+  fi
   library=/usr/lib/libfprint-2.so.2.0.0
   if [[ -r $library ]]; then
     link_report=$(ldd -r "$library" 2>&1)

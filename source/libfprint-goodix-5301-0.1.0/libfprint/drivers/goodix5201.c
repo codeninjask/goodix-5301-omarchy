@@ -4,7 +4,7 @@
  * Copyright (C) 2026 Jodi U. H.
  *
  * Match-on-host press sensor (108x88 pixels, 12 bit) behind an HT32 USB
- * bridge MCU running non-TLS firmware ("GF3208_HT_APP_10035"), found e.g. in
+ * bridge MCU running non-TLS 10035 firmware, found e.g. in
  * the Dell Inspiron 5570.
  *
  * Protocol summary (see the protocol specification for details):
@@ -42,6 +42,7 @@
 
 #include "drivers_api.h"
 #include "goodix5201.h"
+#include "goodix5301-firmware.h"
 
 #define GDX_IFACE_COMM 0
 #define GDX_IFACE_DATA 1
@@ -54,9 +55,6 @@
  * while the device was not in use) is drained before talking to the MCU. */
 #define GDX_DRAIN_TIMEOUT 50
 #define GDX_DRAIN_MAX 64
-
-/* This port was validated against the Dell 27c6:5301 firmware below. */
-#define GDX_FIRMWARE_MATCH "GF3208_HT_APP_10035"
 
 #define GDX_ACK_TIMEOUT 1000
 #define GDX_REPLY_TIMEOUT 1000
@@ -468,7 +466,7 @@ gdx_read_chunk_cb (FpiUsbTransfer *transfer, FpDevice *dev, gpointer user_data, 
     }
   else
     {
-      if (buf[0] != (self->rx->data[0] | 1))
+      if (len <= 1 || buf[0] != (self->rx->data[0] | 1))
         {
           gdx_cmd_done (self, NULL, 0,
                         fpi_device_error_new_msg (FP_DEVICE_ERROR_PROTO,
@@ -574,6 +572,7 @@ gdx_cmd (FpiDeviceGoodix5201 *self,
 
   transfer = fpi_usb_transfer_new (FP_DEVICE (self));
   fpi_usb_transfer_fill_bulk_full (transfer, GDX_EP_OUT, out, out_len, g_free);
+  transfer->short_is_error = TRUE;
   fpi_usb_transfer_submit (transfer, GDX_ACK_TIMEOUT, NULL, gdx_write_cb, NULL);
 }
 
@@ -660,7 +659,7 @@ act_firmware_cb (FpiDeviceGoodix5201 *self, const guint8 *payload, gsize len, GE
 
   version = g_strndup ((const gchar *) payload, len);
   fp_dbg ("Firmware version: %s", version);
-  if (!strstr (version, GDX_FIRMWARE_MATCH))
+  if (!gdx_firmware_supported (payload, len))
     {
       fpi_ssm_mark_failed (ssm, fpi_device_error_new_msg (FP_DEVICE_ERROR_NOT_SUPPORTED,
                                                           "Unsupported firmware %s", version));

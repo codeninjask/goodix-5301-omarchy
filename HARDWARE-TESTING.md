@@ -38,3 +38,13 @@ test during publication.
 Testing on one reader does not establish false-accept/reject rates or production
 security. Compatibility with other firmware, laptops, or future library versions
 is unproven. Password fallback should remain available.
+
+
+## Pending 0.1.0-5 validation
+
+On 2026-10-19 the same reader reported `GF5288_HT_APP_10035` and the installed
+0.1.0-3 rejected both enrollment and verification. Version 0.1.0-5 accepts both
+observed identifiers. Local automated tests do not establish sensor compatibility:
+install the package, enroll all 15 stages, verify a saved finger, cancel and retry,
+then repeat after reboot and suspend/resume. Record results before calling this
+release hardware-tested. No fingerprint image data should be recorded or shared.

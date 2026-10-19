@@ -276,6 +276,7 @@ test_utils = static_library('fprint-test-utils',
     install: false)
 
 unit_tests = [
+    'goodix5301',
     'fpi-device',
     'fpi-ssm',
     'fpi-assembling',

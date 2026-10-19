@@ -75,8 +75,9 @@ e6758333608de12f07ab706d4cb16825287300fb3af53c827a9d86a9e664ad5d  source/libfpri
 315e29d4d3e7a199ef73ea1756b4daac3601b4beb73bee0c0f5883da3f211c98  source/libfprint-goodix-5301-0.1.0/libfprint/drivers/focaltech_moc/focaltech_moc.h
 4b508481faf877c1108a828a88584b835a161e002f012446a8d3b87c192e9dc6  source/libfprint-goodix-5301-0.1.0/libfprint/drivers/fpcmoc/fpc.c
 5198a0ee94bff7fe33cb57c8fea6cbf92a532fabad907a91ab3ca23eadaf6413  source/libfprint-goodix-5301-0.1.0/libfprint/drivers/fpcmoc/fpc.h
-5a34a820fdaf6c05ba81c4b8d91e0edc3617c7c0f9b5deb36acf7902e5b0b350  source/libfprint-goodix-5301-0.1.0/libfprint/drivers/goodix5201.c
+742c7a7fd909e9ce53c51daaba9839514d1d219a53ec37a2dc6a8a9431220074  source/libfprint-goodix-5301-0.1.0/libfprint/drivers/goodix5201.c
 a7fbe951e9b007c4b77be0f498de38cc49d5e3bdcb6019392be9ed4a942e1a80  source/libfprint-goodix-5301-0.1.0/libfprint/drivers/goodix5201.h
+82a4f17a2e6b6f8a5d36e92ff00ef4284d7d7a91ef7929926a68b3341ca18dc9  source/libfprint-goodix-5301-0.1.0/libfprint/drivers/goodix5301-firmware.h
 ceb70309641b861299c04a30ce66b242f4429a001112e36c941372de7c981cd1  source/libfprint-goodix-5301-0.1.0/libfprint/drivers/goodixmoc/goodix.c
 c8eb53963aecba58078187110c50f81033a695f956d9a657499dda5d9fa4eb0b  source/libfprint-goodix-5301-0.1.0/libfprint/drivers/goodixmoc/goodix.h
 e074ab42b4bf3c565ae5a0b61bcc2a3fb877bd563c19da3d93e48c71742182e0  source/libfprint-goodix-5301-0.1.0/libfprint/drivers/goodixmoc/goodix_proto.c
@@ -237,7 +238,7 @@ fea2df3fd88e60fb7c1aed22b077b661ffa60a70e31dc40072f374525c27efd8  source/libfpri
 e2bd734d008d4a00d716fde1b6d34fe684acf782174a2947bb861e5540ae05a0  source/libfprint-goodix-5301-0.1.0/tests/create-driver-test.py.in
 09749515ee0e6996102fa26891a2c12f1616026ebc1bcf698a58ff755172f869  source/libfprint-goodix-5301-0.1.0/tests/driver.test.in
 9675ba5ba9547bf87c667bfd0fd6ebb02de579f84487f71758e1d59eed3b2d50  source/libfprint-goodix-5301-0.1.0/tests/libfprint.supp
-b8f600683709a68ec8f7ba4eee43c82421c69ab55c5ae679949740daeb52f7d6  source/libfprint-goodix-5301-0.1.0/tests/meson.build
+d5f58591b6c07f560e8b905b63a930224c5dfbaf5cf3735580723f7de0e0b45c  source/libfprint-goodix-5301-0.1.0/tests/meson.build
 f8852adfb37e85098c8a32f46e6cdb7587ed6de25ac1635c660547b7fa7fc03a  source/libfprint-goodix-5301-0.1.0/tests/test-device-fake.c
 174f30348821d4e21fd218af61d62a0914d48742f425b609c26bd002e110f8d7  source/libfprint-goodix-5301-0.1.0/tests/test-device-fake.h
 7041a4bb97dcf370b0d0f357e42ab53f4b36b64399d93831e3e20022bdc0dae1  source/libfprint-goodix-5301-0.1.0/tests/test-emulation.c
@@ -247,6 +248,7 @@ f8852adfb37e85098c8a32f46e6cdb7587ed6de25ac1635c660547b7fa7fc03a  source/libfpri
 893964da856de465fbcbff2a14f8209805ffd859158eb715fe8e62b21005b90a  source/libfprint-goodix-5301-0.1.0/tests/test-fpi-device.c
 b7e9bc115ee2220858850b763df7b73166a19f7e19f15ad3acbb27a5527bd131  source/libfprint-goodix-5301-0.1.0/tests/test-fpi-ssm.c
 0b1d8217522ffd10d48fb6ebd6467e58c17df9e5acfe0c76a1694aa965edd669  source/libfprint-goodix-5301-0.1.0/tests/test-generated-hwdb.sh
+0b63454a4f1f2c8e9fe9155952f85b34a67ad47037a29472d9ae4d0bdb0f7353  source/libfprint-goodix-5301-0.1.0/tests/test-goodix5301.c
 aa4c5b611a8a078f4cf13bc2da8ec446d5b44643ca6bcd6eb1254fe8c9937a83  source/libfprint-goodix-5301-0.1.0/tests/test-utils.c
 869f339b5f2719cfb710ce5a32734770545bbe4a3a4164ce034b1d072f18f34e  source/libfprint-goodix-5301-0.1.0/tests/test-utils.h
 516d1f193b95bb2189d68801c0982f626b6a2bba6c075db15ff151c2be08f276  source/libfprint-goodix-5301-0.1.0/tests/test.in

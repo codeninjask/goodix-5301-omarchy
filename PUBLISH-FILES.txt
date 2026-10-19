@@ -12,6 +12,7 @@ SOURCE-MANIFEST.sha256
 install.sh
 integration/05-goodix5301-preserve-driver.hook
 integration/check-reader.sh
+integration/delete-fingerprint.py
 integration/goodix5301-health.hook
 integration/manage-fingerprints.sh
 integration/omarchy-menu.json
@@ -97,6 +98,7 @@ source/libfprint-goodix-5301-0.1.0/libfprint/drivers/fpcmoc/fpc.c
 source/libfprint-goodix-5301-0.1.0/libfprint/drivers/fpcmoc/fpc.h
 source/libfprint-goodix-5301-0.1.0/libfprint/drivers/goodix5201.c
 source/libfprint-goodix-5301-0.1.0/libfprint/drivers/goodix5201.h
+source/libfprint-goodix-5301-0.1.0/libfprint/drivers/goodix5301-firmware.h
 source/libfprint-goodix-5301-0.1.0/libfprint/drivers/goodixmoc/goodix.c
 source/libfprint-goodix-5301-0.1.0/libfprint/drivers/goodixmoc/goodix.h
 source/libfprint-goodix-5301-0.1.0/libfprint/drivers/goodixmoc/goodix_proto.c
@@ -267,6 +269,7 @@ source/libfprint-goodix-5301-0.1.0/tests/test-fpi-assembling.c
 source/libfprint-goodix-5301-0.1.0/tests/test-fpi-device.c
 source/libfprint-goodix-5301-0.1.0/tests/test-fpi-ssm.c
 source/libfprint-goodix-5301-0.1.0/tests/test-generated-hwdb.sh
+source/libfprint-goodix-5301-0.1.0/tests/test-goodix5301.c
 source/libfprint-goodix-5301-0.1.0/tests/test-utils.c
 source/libfprint-goodix-5301-0.1.0/tests/test-utils.h
 source/libfprint-goodix-5301-0.1.0/tests/test.in
@@ -275,3 +278,4 @@ source/libfprint-goodix-5301-0.1.0/tests/unittest_inspector.py
 source/libfprint-goodix-5301-0.1.0/tests/valgrind-python.supp
 source/libfprint-goodix-5301-0.1.0/tests/virtual-device.py
 source/libfprint-goodix-5301-0.1.0/tests/virtual-image.py
+tests/test-menu.py

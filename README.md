@@ -66,6 +66,7 @@ update safeguards. To install the menu helpers manually:
 ```sh
 install -Dm755 integration/manage-fingerprints.sh "$HOME/.local/bin/goodix5301-settings"
 install -Dm755 integration/check-reader.sh "$HOME/.local/libexec/goodix5301/check-reader.sh"
+install -Dm755 integration/delete-fingerprint.py "$HOME/.local/libexec/goodix5301/delete-fingerprint.py"
 ```
 
 Merge the entries in [integration/omarchy-menu.json](integration/omarchy-menu.json)
@@ -112,7 +113,7 @@ journalctl -b -u fprintd.service --no-pager
 ```
 
 The daemon is normally D-Bus activated. Firmware other than
-`GF3208_HT_APP_10035` is deliberately rejected. Reboot if the reader becomes
+`GF3208_HT_APP_10035` and `GF5288_HT_APP_10035` is deliberately rejected. Reboot if the reader becomes
 unresponsive. Do not flash firmware as part of installation or troubleshooting.
 Review diagnostics locally; never publish fingerprint frames, templates, or USB
 captures. See [PUBLISHING.md](PUBLISHING.md) for the repository exclusions.
@@ -141,3 +142,14 @@ Licensed under **LGPL-2.1-or-later**, with retained per-file notices and bundled
 component licenses. See [LICENSE](LICENSE), source `COPYING`, `AUTHORS`, and
 `THANKS`. Packaging and integration scripts added here are also available under
 LGPL-2.1-or-later.
+
+
+### Firmware rejection repair (0.1.0-5)
+
+The reader has now reported both `GF3208_HT_APP_10035` and
+`GF5288_HT_APP_10035`. This release accepts both exact identifiers, rejects
+unknown firmware, and guards menu operations against concurrent scans and false
+success reports. Live enrollment and matching with the newly reported identifier
+remain pending; see HARDWARE-TESTING.md. Existing hardware success refers to
+0.1.0-3. The menu's delete action also requires installing
+`integration/delete-fingerprint.py` to `~/.local/libexec/goodix5301/`.

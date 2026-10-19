@@ -7,8 +7,12 @@ from the J0UH/goodix-5201-linux libfprint branch at commit
 The working local port includes:
 
 - USB matching for `27c6:5301`, retaining the internal `goodix5201` identifier.
-- Exact firmware allowlisting for the observed `GF3208_HT_APP_10035` string.
-  Earlier notes named `GF5288_HT_APP_10035`; that did not match this reader.
+- Exact firmware allowlisting for both observed identifiers,
+  `GF3208_HT_APP_10035` and `GF5288_HT_APP_10035`. The latter was reported by
+  this reader on 2026-10-19; live testing of that activation path is pending.
+- Rejection of payload-free continuation packets and short USB writes.
+- Firmware identifier regression tests, menu operation serialization, and
+  explicit enrollment/verification result checks.
 - Waiting for the delayed reset response before the next configuration command.
 - The existing 256-byte type-08 sensor configuration, sent to volatile RAM.
   It was checked against Dell's signed Goodix Windows driver 1.0.33.800 and
